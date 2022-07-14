@@ -7,21 +7,20 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
-
-    runs-on: windows-latest
-
+  sonarcloud:
+    runs-on: ubuntu-latest
     steps:
-    #- name: Setup .NET
-      #uses: actions/setup-dotnet@v2
-#      with:
-        #dotnet-version: 5.0.x
     - uses: actions/checkout@v3
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    
+
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
     - name: Build
       run: |
         msbuild SimpleFrameworkApp.sln /p:Configuration=Release
